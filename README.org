@@ -1,0 +1,121 @@
+#+TITLE: ob-ffuf: ffuf frontend in org-mode babel
+
+#+OPTIONS: toc:nil
+
+Execute [[https://github.com/ffuf/ffuf][ffuf]] from an Orgmode Babel source code block by providing a raw HTTP request.
+
+Write your HTTP request (or use one obtained via an intercepting proxy) inside a source code block with wordlist input denoted by =FUZZ= (or custom keywords, see [[https://github.com/ffuf/ffuf][ffuf]]). Input either comes from an Orgmode table or a wordlist file.
+
+Further configuration may come either by specifying a user config file or by naming another source code block with configuration inside it.
+
+* Examples
+** Ad-hoc wordlist
+#+begin_quote
+#+NAME: dirs
+| admin   |
+| uploads |
+| private |
+#+end_quote
+
+#+begin_quote
+#+BEGIN_SRC ffuf :wordlist-table dirs
+GET http://example.com/FUZZ HTTP/1.1
+Host: example.com
+User-Agent: ob-ffuf
+Accept: text/html
+Accept-Language: en-US
+Connection: keep-alive
+#+END_SRC
+#+end_quote
+
+This will result in three requests:
+- =http://example.com/admin=
+- =http://example.com/uploads=
+- =http://example.com/private=
+
+*NOTE*: Because the table has only one column, no header is needed. The fuzzing keyword defaults to =FUZZ=, thus the above table is equivalent to:
+
+#+begin_quote
+#+NAME: dirs
+| FUZZ    |
+|---------|
+| admin   |
+| uploads |
+| private |
+#+end_quote
+
+** Multiple wordlists and configuration
+Multiple ad-hoc wordlists are specified like the following. The table headers will be the keywords:
+#+begin_quote
+#+NAME: asdf
+| FOO   | BAR   |
+|-------+-------|
+| hello | world |
+| good  | day   |
+#+end_quote
+
+*NOTE*: Tables with more than one column must have one header per column.
+
+If further configuration is required, a config block can be used:
+#+begin_quote
+#+NAME: config
+#+BEGIN_SRC toml
+[general]
+quiet = true
+
+[input]
+inputmode = "pitchfork"
+#+END_SRC
+#+end_quote
+
+#+begin_quote
+#+BEGIN_SRC ffuf :wordlist-table asdf :config-block config
+GET http://example.com/FOO/BAR HTTP/1.1
+Host: example.com
+User-Agent: ob-ffuf
+Accept: text/html
+Accept-Language: en-US
+Connection: keep-alive
+#+END_SRC
+#+end_quote
+
+*NOTE*: Every input from within Orgmode must have a =#+NAME= tag and supplied via the custom header arguments.
+
+** Wordlist files and config on the system
+
+If existing wordlist files and / or configuration need to be supplied, do it like so:
+#+begin_quote
+#+BEGIN_SRC ffuf :wordlist-wordlists ("/first/wordlist.txt:FOO" "/second/wordlist.txt:BAR") :config-file "/path/to/config.toml"
+GET http://example.com/FOO/BAR HTTP/1.1
+Host: example.com
+User-Agent: ob-ffuf
+Accept: text/html
+Accept-Language: en-US
+Connection: keep-alive
+#+END_SRC
+#+end_quote
+
+*NOTE*: If there is only a single wordlist file, it can be specified as a single string: =:wordlist-files "/path/to/wordlist.txt"=.
+
+* Custom header arguments
+| =:wordlist-table= | Named Orgmode table which will be converted into wordlist and fed into =ffuf=.                                                                       |
+| =:wordlist-flies= | A list of paths to wordlist files, or a single string, if it is a only one wordlist file. Will be combined with =:wordlist-table=.                   |
+| =:config-block=   | An Orgmode source code block in =ffuf= config file format. See [[https://github.com/ffuf/ffuf/blob/master/ffufrc.example][ffufrc.example]]. These are intended to not overburden the block header with arguments. |
+| =:config-file=    | A path to a custom config file.                                                                                                                      |
+
+* Running
+=ob-ffuf= starts an asynchronous process, thus Emacs does not block. The result is collected inside a temporary buffer and inserted below the block after ffuf exited. I have no idea yet what happens, if two runs are started at the same time.
+
+* ffuf errors
+ffuf's error stream is captured in the =*ob-ffuf stderr*= buffer. So if errors are encountered, they may be investigated there.
+
+* Why?
+=ob-ffuf= was not made with long fuzzing campaigns in mind, although I guess it is possible to log into a remote machine which is running an Emacs server with the =ob-ffuf= package installed.
+
+I document my pentesting work with Orgmode anyway, so if I want to try a few very specific payloads, I can do it with =ob-ffuf= and later export my findings.
+
+* Suggestions and contributions welcome
+:)
+
+* License
+=ob-ffuf= is licensed under the [[https://www.gnu.org/licenses/gpl-3.0.en.html][GNU GPL Version 3]].
