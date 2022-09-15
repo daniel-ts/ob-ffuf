@@ -29,22 +29,28 @@
 
 ;;; Code:
 (defun ob-ffuf--get-table-headers (table)
+  "Fetches table headers from from TABLE.
+Evaluates to a list of table headers or nil otherwise."
     (if (eq (car (cdr table)) 'hline)
 	(car table)
       '()))
 
 (defun ob-ffuf--get-table-body (table)
-    (if (eq (car (cdr table)) 'hline)
+  "Fetches the body from TABLE."
+  (if (eq (car (cdr table)) 'hline)
 	(cdr (cdr table))
       table))
 
 (defun ob-ffuf--normalize-table (table)
+  "If TABLE has no header, give it the default header.
+See `ob-ffuf-default-fuzz-keyword'."
   (if (ob-ffuf--get-table-headers table)
       table ;; has headers, do nothing
     (append `(,(list ob-ffuf-default-fuzz-keyword) hline) table)))
 
 (defun ob-ffuf--table-ok? (table)
-  "Checks that the table headers are non-empty strings and that each
+  "Validates TABLE.
+Checks that the table headers are non-empty strings and that each
 column has a header."
   (cl-flet ((check-header (lambda (header)
 			    (and (stringp header)
@@ -62,8 +68,9 @@ column has a header."
 	headers-ok))))
 
 (defun ob-ffuf--get-wl-alist (table)
-  "Makes temporary wordlist files in the system temporary directory
-from HEADERS and returns an alist with elements of the form
+  "Create wordlist files from TABLE.
+Makes temporary wordlist files in the system temporary directory from
+HEADERS and returns an alist with elements of the form
 '(header . file-name)'."
   (let ((headers (car table)))
     (mapcar (lambda (header)
@@ -71,8 +78,9 @@ from HEADERS and returns an alist with elements of the form
 	    headers)))
 
 (defun ob-ffuf--serialize-wordlist-table (table)
-  "Takes an org-mode TABLE in lisp form and writes each column of the
-table bodyto a file. Returns a wordlist-alist of the form
+  "Serialize TABLE into wordlist files.
+Takes an 'org-mode' TABLE in Lisp form and writes each column of the
+table bodyto a file.  Returns a wordlist-alist of the form
 '(fuzz-keyword . file)'."
 
   (unless (ob-ffuf--table-ok? table)
@@ -97,15 +105,16 @@ table bodyto a file. Returns a wordlist-alist of the form
     wl-alist))
 
 (defun ob-ffuf--remove-wordlists (wl-alist)
-  "Removes all files referenced by WL-ALIST."
+  "Remove all files referenced by WL-ALIST."
   (dolist (wl-cell wl-alist)
     (let ((file (cdr wl-cell)))
       (ignore-error (file-error)
 	(delete-file file)))))
 
 (defun ob-ffuf--serialize-body (body)
-  "Takes the BODY of an org source code block and writes it to a file
-in the `org-babel-temporary-directory'. Returns the file path."
+  "Serialize BODY to file.
+Takes the BODY of an org source code block and writes it to a file in
+the `org-babel-temporary-directory'.  Returns the file path."
   (let ((req-file (org-babel-temp-file "request-" ".txt")))
     (with-temp-buffer
       (insert body)
@@ -113,7 +122,8 @@ in the `org-babel-temporary-directory'. Returns the file path."
     req-file))
 
 (defun ob-ffuf--wordlist-params-from-alist (wordlist-alist)
-  "Creates a list of wordlist parameters from WORDLIST-ALIST: (\"FUZZ\" . \"/path/to/wordlist.txt) → \"/path/to/wordlist.txt:FUZZ\"."
+  "Create a list of wordlist parameters from WORDLIST-ALIST:
+\(\"FUZZ\" . \"/path/to/wordlist.txt) → \"/path/to/wordlist.txt:FUZZ\"."
 
   (mapcar
    (lambda (element)
@@ -121,7 +131,8 @@ in the `org-babel-temporary-directory'. Returns the file path."
    wordlist-alist))
 
 (defun ob-ffuf--wordlist-cmdline-args (&rest wordlist-path-lists)
-  "Combine lists in WORDLIST-PATH-LISTS to a single list and prepend
+  "Create the wordlist commandline argument.
+Combine lists in WORDLIST-PATH-LISTS to a single list and prepend
 a '-w'."
   (let ((ret nil)
 	(paths (flatten-tree wordlist-path-lists)))
@@ -131,18 +142,20 @@ a '-w'."
     ret))
 
 (defun ob-ffuf--normalize-wordlist-paths (paths)
-  "If PATHS is a single string, it will be returned as a list with a
+  "Normalizes PATHS.
+If PATHS is a single string, it will be returned as a list with a
 single string."
   (if (stringp paths)
       (list paths)
     paths))
 
 (defun ob-ffuf--wordlists-from-org-table (table)
-  "Creates wordlist files in the `org-babel-temporary-directory'
-temporary directory from the org table referenced in TABLE. Returns an
-alist of the form '(\"FUZZ-Keyword\" . \"/path/to/wordlist.txt\")'.
-During the process, it checks the supplied table for saneness.
-See `ob-ffuf--table-ok?', `ob-ffuf--normalize-table',
+  "Create wordlists from TABLE.
+Creates wordlist files in the `org-babel-temporary-directory'
+from the org table referenced in TABLE.  Returns an alist of the form
+'(\"FUZZ-Keyword\" . \"/path/to/wordlist.txt\")'.  During the process,
+it checks the supplied table for saneness.  See `ob-ffuf--table-ok?',
+`ob-ffuf--normalize-table',
 `ob-ffuf--serialize-wordlist-table'."
 
   (when table
@@ -151,16 +164,17 @@ See `ob-ffuf--table-ok?', `ob-ffuf--normalize-table',
       (org-babel-ref-resolve table)))))
 
 (defun ob-ffuf--handle-proc-events (&rest handlers)
-  "Takes keyword arguments for process events and registeres a HANDLER
-for that event. Supported events are :on-finish, run on normal process
+  "Set event HANDLERS as process sentinel.
+Takes keyword arguments for process events and registeres a HANDLER
+for that event.  Supported events are :on-finish, run on normal process
 exit; :on-error, run when the process exits abnormally and :finally,
-always run in the end. Note that a handler must be one single
+always run in the end.  Note that a handler must be one single
 function."
   (cl-flet ((funcall-or-ignore (lambda (fn &rest args)
 				   (if fn
 				       (apply fn args)
 				     (ignore args)))))
-    (lambda (proc event)
+    (lambda (_proc event)
 
       (cond ((string-search "finished" event)
 	     (funcall-or-ignore (plist-get handlers :on-finish)))
@@ -177,7 +191,7 @@ function."
   "Strips CR and terminal control chars from current buffer.
 
 Must be done, because having the stats would be nice, but turning
-on silent mode strips those. Turning off silent mode adds terminal
+on silent mode strips those.  Turning off silent mode adds terminal
 coloring in the current version of ffuf."
 
   (goto-char (point-min))
@@ -185,7 +199,7 @@ coloring in the current version of ffuf."
     (replace-match "")))
 
 (defun ob-ffuf--serialize-config-block (block-name)
-  "Serializes a config block as an `org-babel-tmp-file'."
+  "Serializes the config block BLOCK-NAME as an `org-babel-tmp-file'."
   (let ((ref (org-babel-lob--src-info block-name)))
     (when ref
       (let ((file (org-babel-temp-file "ffuf-config-" ".toml")))

@@ -27,17 +27,12 @@
 
 ;; This file contains tests for ob-ffuf.
 
-;;; Code
+;;; Code:
 (require 'ert)
 (require 'cl-lib)
 
-;;;;;;;;;;;;;;;;;;;;;;
-;; HELPER FUNCTIONS ;;
-;;;;;;;;;;;;;;;;;;;;;;
-
 (defun ob-ffuf--zip-test-data (data result)
-  "Iterates throught the TABE and RESULT lists (which must be of same
-length), `cons'ing their elements into a new list."
+  "Combines the test DATA and the desired RESULT."
   (when (eq (length data) (length result))
     (let ((zipped (list)))
       (dotimes (i (length data))
@@ -45,10 +40,6 @@ length), `cons'ing their elements into a new list."
 		    (nth i result))
 	      zipped))
       (nreverse zipped))))
-
-;;;;;;;;;;;;;;;
-;; TEST DATA ;;
-;;;;;;;;;;;;;;;
 
 (setq ob-ffuf--test-tables-good
       '((("FUZZ") hline ("hello") ("world") ("test"))
@@ -72,10 +63,6 @@ length), `cons'ing their elements into a new list."
       '(("hello\nworld\ntest\n")
 	("hello\n1\ntest" "world\n2\n")
 	("a\nc" "b\nd\n")))
-
-;;;;;;;;;;;
-;; TESTS ;;
-;;;;;;;;;;;
 
 (ert-deftest ob-ffuf--test-normalize-table ()
   "Test of `ob-ffuf--normalize-table' function."

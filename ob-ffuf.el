@@ -33,7 +33,7 @@
 ;;
 ;; Write your HTTP request inside a source code block with fuzzing
 ;; input inserted where the fuzzing keyword (FUZZ by default) is placed
-;; (and the ffuf backend permits it). Input either comes from an
+;; (and the ffuf backend permits it).  Input either comes from an
 ;; Orgmode table or a wordlist file (:wordlist-table or :wordlist-files
 ;; respectively, see README.org).
 ;;
@@ -49,8 +49,8 @@
 (require 'ob-ffuf-mode)
 
 (defvar ob-ffuf-default-fuzz-keyword "FUZZ"
-  "The default fuzzing placeholder keyword to use, when the supplied
-org-table has no header.")
+  "The default fuzzing keyword to use.
+Used when the org table has no header.")
 
 (defvar ob-ffuf-command "ffuf"
   "The ffuf binary to be executed.")
@@ -124,10 +124,10 @@ This function is called by `org-babel-execute-src-block'."
 
   nil) ;; return nil instead of process
 
-(defun org-babel-expand-body:ffuf (body params)
+(defun org-babel-expand-body:ffuf (_body _params)
   (error "Body expansion not implemented for ob-ffuf"))
 
-(defun org-babel-prep-session:ffuf (session params)
+(defun org-babel-prep-session:ffuf (_session _params)
   (error "Sessions not implemented for ob-ffuf"))
 
 (provide 'ob-ffuf)
