@@ -1,8 +1,12 @@
 ;;; ob-ffuf-helpers.el --- Babel funcitons for ffuf -*- lexical-binding: t -*-
 
-;; Copyrigth (C) 2022 Daniel Tschertkow
+;; Copyright (C) 2022 Daniel Tschertkow
 
-;;; License
+;; Package-Requires: ((emacs "28.1"))
+;; Package-Version: 0
+;; URL: https://github.com/daniel-ts/ob-ffuf
+
+;;; License:
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +23,11 @@
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
 
-;;; Code
+;;; Commentary:
+
+;; This file contains the helper functions for ob-ffuf.
+
+;;; Code:
 (defun ob-ffuf--get-table-headers (table)
     (if (eq (car (cdr table)) 'hline)
 	(car table)
@@ -187,4 +195,4 @@ coloring in the current version of ffuf."
 	    file))))
 
 (provide 'ob-ffuf-helpers)
-;;; ob-ffuf.el ends here
+;;; ob-ffuf-helpers.el ends here

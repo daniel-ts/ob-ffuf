@@ -1,13 +1,16 @@
 ;;; ob-ffuf.el --- Babel funcitons for ffuf -*- lexical-binding: t -*-
 
-;; Copyrigth (C) 2022 Daniel Tschertkow
+;; Copyright (C) 2022 Daniel Tschertkow
 
 ;; Author: Daniel Tschertkow
 ;; Maintainer: Daniel Tschertkow <daniel.tschertkow@posteo.de>
-;; Keywords: fuzzing, ffuf, hacking, pentest
-;; Homepage: https://orgmode.org
+;; Keywords: comm, tools
+;; URL: https://github.com/daniel-ts/ob-ffuf
+;; Keywords: lisp
+;; Version: 0.9
+;; Package-Requires: ((emacs "28.1"))
 
-;;; License
+;;; License:
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,7 +27,7 @@
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
 
-;;; Commentary
+;;; Commentary:
 
 ;; Org-Babel support for web fuzzing with ffuf.
 ;;
@@ -126,9 +129,6 @@ This function is called by `org-babel-execute-src-block'."
 
 (defun org-babel-prep-session:ffuf (session params)
   (error "Sessions not implemented for ob-ffuf"))
-
-(eval-after-load "org"
-  '(add-to-list 'org-src-lang-modes '("ffuf" . ob-ffuf)))
 
 (provide 'ob-ffuf)
 ;;; ob-ffuf.el ends here

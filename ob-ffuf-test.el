@@ -2,7 +2,11 @@
 
 ;; Copyrigth (C) 2022 Daniel Tschertkow
 
-;;; License
+;; Package-Requires: ((emacs "28.1"))
+;; Package-Version: 0
+;; URL: https://github.com/daniel-ts/ob-ffuf
+
+;;; License:
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +22,10 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
+
+;;; Commentary:
+
+;; This file contains tests for ob-ffuf.
 
 ;;; Code
 (require 'ert)
@@ -114,3 +122,4 @@ length), `cons'ing their elements into a new list."
 	   (ob-ffuf--wordlist-cmdline-args
 	    '("foo.txt:FOO" "bar.txt:BAR") '("baz.txt:BAZ" ""))
 	   '("-w" "foo.txt:FOO" "-w" "bar.txt:BAR" "-w" "baz.txt:BAZ"))))
+;;; ob-ffuf-test.el ends here
