@@ -23,9 +23,9 @@
 ;; (<https://github.com/zweifisch/ob-http>) by Feng Zhou.
 
 (setq ob-ffuf--mode-keywords
-      (let* ((ob-ffuf-methods
+      (let* ((ffuf-methods
               '(GET POST PUT PATCH DELETE OPTIONS HEAD TRACE CONNECT))
-             (ob-ffuf-headers
+             (ffuf-headers
               '(Accept Accept-Charset Accept-Encoding Accept-Language
                        Accept-Datetime Authorization Cache-Control
                        Connection Cookie Content-Length Content-MD5
@@ -36,38 +36,38 @@
 		       Sec-Fetch-Mode Sec-Fetch-Site TE
 		       Upgrade-Insecure-Requests User-Agent Upgrade Via
 		       Warning))
-             (ob-ffuf-methods-regexp
+             (ffuf-methods-regexp
               (rx-to-string
                `(seq
                  bol
                  (? (1+ space))
-                 (group-n 1 (or ,@(mapcar 'symbol-name ob-ffuf-methods)))
+                 (group-n 1 (or ,@(mapcar 'symbol-name ffuf-methods)))
                  space
                  (group-n 2 (1+ any))
                  eol)))
-             (ob-ffuf-headers-regexp
+             (ffuf-headers-regexp
               (rx-to-string
                `(seq
                  bol
                  (? (1+ space))
-                 (group-n 1 (or ,@(mapcar 'symbol-name ob-ffuf-headers)))
+                 (group-n 1 (or ,@(mapcar 'symbol-name ffuf-headers)))
                  ": "
                  (group-n 2 (1+ any))
                  eol)))
-             (ob-ffuf-custom-headers-regexp
+             (ffuf-custom-headers-regexp
               "\\(^X-[^ :]+\\): \\(.*\\)$")
-             (ob-ffuf-variable-regexp
+             (ffuf-variable-regexp
               "\\([^ ?&=\n]+\\)=\\([^&\n]*\\)")
-             (ob-ffuf-misc-regexp
+             (ffuf-misc-regexp
               "\\(&\\|=\\|?\\|{\\|}\\|\\[\\|\\]\\|\\,\\|:\\)"))
-        `((,ob-ffuf-headers-regexp (1 font-lock-variable-name-face) (2 font-lock-string-face))
-          (,ob-ffuf-custom-headers-regexp (1 font-lock-variable-name-face) (2 font-lock-string-face))
-          (,ob-ffuf-variable-regexp (1 font-lock-variable-name-face) (2 font-lock-string-face))
-          (,ob-ffuf-methods-regexp  (1 font-lock-constant-face) (2 font-lock-function-name-face))
-          (,ob-ffuf-misc-regexp (1 font-lock-comment-face)))))
+        `((,ffuf-headers-regexp (1 font-lock-variable-name-face) (2 font-lock-string-face))
+          (,ffuf-custom-headers-regexp (1 font-lock-variable-name-face) (2 font-lock-string-face))
+          (,ffuf-variable-regexp (1 font-lock-variable-name-face) (2 font-lock-string-face))
+          (,ffuf-methods-regexp  (1 font-lock-constant-face) (2 font-lock-function-name-face))
+          (,ffuf-misc-regexp (1 font-lock-comment-face)))))
 
-(define-derived-mode ob-ffuf-mode fundamental-mode "ob-ffuf"
+(define-derived-mode ffuf-mode fundamental-mode "ffuf"
   (set (make-local-variable 'font-lock-defaults) '(ob-ffuf--mode-keywords)))
 
-(provide 'ob-ffuf-mode)
+(provide 'ffuf-mode)
 ;;; ob-ffuf-mode.el ends here
