@@ -16,14 +16,14 @@ Further configuration may come either by specifying a user config file or by nam
 #+END_SRC
 
 #+BEGIN_SRC fundamental
-#+BEGIN_SRC ffuf :wordlist-table dirs
+\#+BEGIN_SRC ffuf :wordlist-table dirs
 GET http://example.com/FUZZ HTTP/1.1
 Host: example.com
 User-Agent: ob-ffuf
 Accept: text/html
 Accept-Language: en-US
 Connection: keep-alive
-#+END_SRC
+\#+END_SRC
 #+END_SRC
 
 This will result in three requests:
@@ -57,24 +57,24 @@ Multiple ad-hoc wordlists are specified like the following. The table headers wi
 If further configuration is required, a config block can be used:
 #+BEGIN_SRC fundamental
 #+NAME: config
-#+BEGIN_SRC toml
+\#+BEGIN_SRC toml
 [general]
 quiet = true
 
 [input]
 inputmode = "pitchfork"
-#+END_SRC
+\#+END_SRC
 #+END_SRC
 
 #+BEGIN_SRC fundamental
-#+BEGIN_SRC ffuf :wordlist-table asdf :config-block config
+\#+BEGIN_SRC ffuf :wordlist-table asdf :config-block config
 GET http://example.com/FOO/BAR HTTP/1.1
 Host: example.com
 User-Agent: ob-ffuf
 Accept: text/html
 Accept-Language: en-US
 Connection: keep-alive
-#+END_SRC
+\#+END_SRC
 #+END_SRC
 
 *NOTE*: Every input from within Orgmode must have a =#+NAME= tag and supplied via the custom header arguments.
@@ -83,14 +83,14 @@ Connection: keep-alive
 
 If existing wordlist files and / or configuration need to be supplied, do it like so:
 #+BEGIN_SRC fundamental
-#+BEGIN_SRC ffuf :wordlist-wordlists ("/first/wordlist.txt:FOO" "/second/wordlist.txt:BAR") :config-file "/path/to/config.toml"
+\#+BEGIN_SRC ffuf :wordlist-wordlists ("/first/wordlist.txt:FOO" "/second/wordlist.txt:BAR") :config-file "/path/to/config.toml"
 GET http://example.com/FOO/BAR HTTP/1.1
 Host: example.com
 User-Agent: ob-ffuf
 Accept: text/html
 Accept-Language: en-US
 Connection: keep-alive
-#+END_SRC
+\#+END_SRC
 #+END_SRC
 
 *NOTE*: If there is only a single wordlist file, it can be specified as a single string: =:wordlist-files "/path/to/wordlist.txt"=.
