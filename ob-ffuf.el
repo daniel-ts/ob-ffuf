@@ -48,10 +48,6 @@
 (require 'ob-ffuf-helpers)
 (require 'ob-ffuf-mode)
 
-(defvar ob-ffuf-default-fuzz-keyword "FUZZ"
-  "The default fuzzing keyword to use.
-Used when the org table has no header.")
-
 (defvar ob-ffuf-command "ffuf"
   "The ffuf binary to be executed.")
 

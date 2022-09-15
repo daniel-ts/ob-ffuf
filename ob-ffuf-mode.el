@@ -69,5 +69,5 @@
 (define-derived-mode ffuf-mode fundamental-mode "ffuf"
   (set (make-local-variable 'font-lock-defaults) '(ob-ffuf--mode-keywords)))
 
-(provide 'ffuf-mode)
+(provide 'ob-ffuf-mode)
 ;;; ob-ffuf-mode.el ends here

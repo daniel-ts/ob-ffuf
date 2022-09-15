@@ -28,6 +28,10 @@
 ;; This file contains the helper functions for ob-ffuf.
 
 ;;; Code:
+(defvar ob-ffuf-default-fuzz-keyword "FUZZ"
+  "The default fuzzing keyword to use.
+Used when the org table has no header.")
+
 (defun ob-ffuf--get-table-headers (table)
   "Fetches table headers from from TABLE.
 Evaluates to a list of table headers or nil otherwise."
