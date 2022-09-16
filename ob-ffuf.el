@@ -70,7 +70,7 @@ This function is called by `org-babel-execute-src-block'."
 	  (ob-ffuf--wordlist-cmdline-args
 	   (ob-ffuf--wordlist-params-from-alist wordlist-tmp-file-alist)
 	   (ob-ffuf--normalize-wordlist-paths
-	    (cdr (assq params :wordlist-files)))))
+	    (cdr (assq :wordlist-files params)))))
 
 	 (request-file (ob-ffuf--serialize-body body))
 
