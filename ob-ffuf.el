@@ -96,27 +96,27 @@ This function is called by `org-babel-execute-src-block'."
        :connection-type 'pipe
        :sentinel
        (ob-ffuf--handle-proc-events
-	    :on-finish (lambda ()
-		             "Inserts contents from 'tmp-buf' into 'org-buf'."
-		             (with-current-buffer tmp-buf
-		               (ob-ffuf--current-buffer-remove-garbage)
-		               (let ((tmp-buf-content (buffer-string)))
-			             (kill-buffer tmp-buf)
-			             (with-current-buffer org-buf
-			               (org-babel-insert-result tmp-buf-content
-						                            (list 'raw))))))
+	:on-finish (lambda ()
+		     "Inserts contents from 'tmp-buf' into 'org-buf'."
+		     (with-current-buffer tmp-buf
+		       (ob-ffuf--current-buffer-remove-garbage)
+		       (let ((tmp-buf-content (buffer-string)))
+			 (kill-buffer tmp-buf)
+			 (with-current-buffer org-buf
+			   (org-babel-insert-result tmp-buf-content
+						    (list 'raw))))))
 
-	    :on-error (lambda (err)
-		            (message "ob-ffuf encountered an error: %s" err))
+	:on-error (lambda (err)
+		    (message "ob-ffuf encountered an error: %s" err))
 
-	    :finally (lambda ()
-		           "Clean up temporary files."
-		           (ob-ffuf--remove-wordlists wordlist-tmp-file-alist)
-		           (ignore-error (file-error)
-		             (delete-file request-file))
-		           (ignore-error (file-error)
-		             (delete-file block-config-file))
-		           (kill-buffer tmp-buf))))))
+	:finally (lambda ()
+		   "Clean up temporary files."
+		   (ob-ffuf--remove-wordlists wordlist-tmp-file-alist)
+		   (ignore-error (file-error)
+		     (delete-file request-file))
+		   (ignore-error (file-error)
+		     (delete-file block-config-file))
+		   (kill-buffer tmp-buf))))))
 
   nil) ;; return nil instead of process
 
