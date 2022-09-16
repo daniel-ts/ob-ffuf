@@ -83,7 +83,7 @@ Connection: keep-alive
 
 If existing wordlist files and / or configuration need to be supplied, do it like so:
 #+BEGIN_SRC fundamental
-\#+BEGIN_SRC ffuf :wordlist-wordlists ("/first/wordlist.txt:FOO" "/second/wordlist.txt:BAR") :config-file "/path/to/config.toml"
+\#+BEGIN_SRC ffuf :wordlist-files ("/first/wordlist.txt:FOO" "/second/wordlist.txt:BAR") :config-file "/path/to/config.toml"
 GET http://example.com/FOO/BAR HTTP/1.1
 Host: example.com
 User-Agent: ob-ffuf
@@ -97,7 +97,7 @@ Connection: keep-alive
 
 * Custom header arguments
 | =:wordlist-table= | Named Orgmode table which will be converted into wordlist and fed into =ffuf=.                                                                       |
-| =:wordlist-flies= | A list of paths to wordlist files, or a single string, if it is a only one wordlist file. Will be combined with =:wordlist-table=.                   |
+| =:wordlist-files= | A list of paths to wordlist files, or a single string, if it is a only one wordlist file. Will be combined with =:wordlist-table=.                   |
 | =:config-block=   | An Orgmode source code block in =ffuf= config file format. See [[https://github.com/ffuf/ffuf/blob/master/ffufrc.example][ffufrc.example]]. These are intended to not overburden the block header with arguments. |
 | =:config-file=    | A path to a custom config file.                                                                                                                      |
 
