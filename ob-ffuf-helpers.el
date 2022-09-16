@@ -204,13 +204,14 @@ coloring in the current version of ffuf."
 
 (defun ob-ffuf--serialize-config-block (block-name)
   "Serializes the config block BLOCK-NAME as an `org-babel-tmp-file'."
-  (let ((ref (org-babel-lob--src-info block-name)))
-    (when ref
-      (let ((file (org-babel-temp-file "ffuf-config-" ".toml")))
-	    (with-temp-buffer
-	      (insert (org-babel--expand-body ref))
-	      (write-region nil nil file))
-	    file))))
+  (when block-name
+    (let ((ref (org-babel-lob--src-info block-name)))
+      (when ref
+	(let ((file (org-babel-temp-file "ffuf-config-" ".toml")))
+	  (with-temp-buffer
+	    (insert (org-babel--expand-body ref))
+	    (write-region nil nil file))
+	  file)))))
 
 (provide 'ob-ffuf-helpers)
 ;;; ob-ffuf-helpers.el ends here
