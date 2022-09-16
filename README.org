@@ -6,6 +6,14 @@ Write your HTTP request (or use one obtained via an intercepting proxy) inside a
 
 Further configuration may come either by specifying a user config file or by naming another source code block with configuration inside it.
 
+* Installation
+** From Source
+Checkout the repository and add the resulting directory in your Emacs =load-path= (see =C-h v load-path=) and then =(require 'ob-ffuf)=.
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "/path/to/ob-ffuf")
+(require 'ob-ffuf)
+#+END_SRC
+
 * Examples
 ** Ad-hoc wordlist
 #+BEGIN_SRC fundamental
