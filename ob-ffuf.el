@@ -42,7 +42,7 @@
 ;; <https://github.com/ffuf/ffuf/blob/master/ffufrc.example>) for
 ;; details.
 
-;;; Code
+;;; Code:
 (require 'ob)
 (require 'ob-ffuf-helpers)
 (require 'ob-ffuf-mode)
@@ -120,9 +120,11 @@ This function is called by `org-babel-execute-src-block'."
   nil) ;; return nil instead of process
 
 (defun org-babel-expand-body:ffuf (_body _params)
+  "Body expansion is not implemented."
   (error "Body expansion not implemented for ob-ffuf"))
 
 (defun org-babel-prep-session:ffuf (_session _params)
+  "Sessions are not implemented."
   (error "Sessions not implemented for ob-ffuf"))
 
 (provide 'ob-ffuf)
