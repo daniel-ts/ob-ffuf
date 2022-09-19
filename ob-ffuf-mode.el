@@ -46,7 +46,7 @@
                `(seq
                  bol
                  (? (1+ space))
-                 (group-n 1 (or ,@(mapcar 'symbol-name http-methods)))
+                 (group-n 1 (or ,@(mapcar #'symbol-name http-methods)))
                  space
                  (group-n 2 (1+ any))
                  eol)))
@@ -55,7 +55,7 @@
                `(seq
                  bol
                  (? (1+ space))
-                 (group-n 1 (or ,@(mapcar 'symbol-name http-headers)))
+                 (group-n 1 (or ,@(mapcar #'symbol-name http-headers)))
                  ": "
                  (group-n 2 (1+ any))
                  eol)))
