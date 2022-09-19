@@ -2,10 +2,6 @@
 
 ;; Copyright (C) 2022 Daniel Tschertkow
 
-;; Package-Requires: ((emacs "28.1"))
-;; Package-Version: 0
-;; URL: https://github.com/daniel-ts/ob-ffuf
-
 ;;; License:
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -28,6 +24,9 @@
 ;; This file contains the helper functions for ob-ffuf.
 
 ;;; Code:
+(require 'ob)
+(require 'cl-lib)
+
 (defvar ob-ffuf-default-fuzz-keyword "FUZZ"
   "The default fuzzing keyword to use.
 Used when the org table has no header.")
@@ -104,7 +103,7 @@ table bodyto a file.  Returns a wordlist-alist of the form
 			       (number-to-string col)
 			     col)))
 		(unless (string-equal word "")
-		  (insert (concat word "\n"))))))
+		  (insert word "\n")))))
 	  (write-region nil nil file))))
     wl-alist))
 

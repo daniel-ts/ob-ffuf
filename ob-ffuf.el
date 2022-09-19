@@ -6,7 +6,6 @@
 ;; Maintainer: Daniel Tschertkow <daniel.tschertkow@posteo.de>
 ;; Keywords: comm, tools
 ;; URL: https://github.com/daniel-ts/ob-ffuf
-;; Keywords: lisp
 ;; Version: 0.9
 ;; Package-Requires: ((emacs "28.1"))
 
