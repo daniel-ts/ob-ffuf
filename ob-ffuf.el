@@ -121,11 +121,11 @@ This function is called by `org-babel-execute-src-block'."
 
 (defun org-babel-expand-body:ffuf (_body _params)
   "Body expansion is not implemented."
-  (error "Body expansion not implemented for ob-ffuf"))
+  (user-error "Error: Body expansion not implemented for ob-ffuf"))
 
 (defun org-babel-prep-session:ffuf (_session _params)
   "Sessions are not implemented."
-  (error "Sessions not implemented for ob-ffuf"))
+  (user-error "Error: Sessions not implemented for ob-ffuf"))
 
 (provide 'ob-ffuf)
 ;;; ob-ffuf.el ends here
