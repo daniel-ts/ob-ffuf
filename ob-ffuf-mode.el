@@ -27,7 +27,7 @@
 ;;; Code:
 (defvar ob-ffuf--mode-keywords nil "Mode keywords for ob-ffuf.")
 
-(setq ob-ffuf--mode-keywords
+(defvar ob-ffuf--mode-keywords
       (let* ((http-methods
               '(GET POST PUT PATCH DELETE OPTIONS HEAD TRACE CONNECT))
              (http-headers
@@ -69,7 +69,8 @@
           (,http-custom-headers-regexp (1 font-lock-variable-name-face) (2 font-lock-string-face))
           (,http-variable-regexp (1 font-lock-variable-name-face) (2 font-lock-string-face))
           (,http-methods-regexp  (1 font-lock-constant-face) (2 font-lock-function-name-face))
-          (,http-misc-regexp (1 font-lock-comment-face)))))
+          (,http-misc-regexp (1 font-lock-comment-face))))
+      "Keywords for highlighting parts of the HTTP requests.")
 
 (define-derived-mode ob-ffuf-mode fundamental-mode "ffuf"
   (set (make-local-variable 'font-lock-defaults) '(ob-ffuf--mode-keywords)))
