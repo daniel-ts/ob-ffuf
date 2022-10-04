@@ -1,4 +1,4 @@
-;;; ob-ffuf.el --- Babel funcitons for ffuf -*- lexical-binding: t -*-
+;;; ob-ffuf.el --- Babel functions for ffuf -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2022 Daniel Tschertkow
 
